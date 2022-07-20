@@ -7,13 +7,13 @@ I plan to design a refrigerator management application with expire date reminder
 
 Users can add items like ingredients, food remaining and drinks 
 to the refrigerator management system with a specific expire date. 
-The application would order these items given the closest expire date, 
+The application would order these items given the closest expiry date, 
 and outline the items which have been expired. 
 
 Moreover, user can modify the original expire date if they process 
 the food ingredients. For example, there were some cucumbers that are 
 supposed to expire in three day, but user decided to pickle them, therefore
-the expire date becomes "forever". Also, user can discard the items from the 
+the expiry date becomes "forever". Also, user can discard the items from the 
 application once they junk or finish those items. 
 
 ***Who will use it?***
