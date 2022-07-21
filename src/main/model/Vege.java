@@ -1,6 +1,8 @@
 package model;
 
 
+import java.util.Collections;
+
 public class Vege extends Food {
 
     // construct a Vege object
@@ -8,6 +10,7 @@ public class Vege extends Food {
     public Vege() {
         super();
     }
+
 
     @Override
     public void pickle() {
@@ -23,4 +26,5 @@ public class Vege extends Food {
     public void cook() {
         expiry += 10;
     }
+
 }

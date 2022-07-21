@@ -1,7 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
 
 public class Fridge {
     // fields
@@ -13,6 +15,10 @@ public class Fridge {
         this.storage = 0;
     }
 
+    public void customSort() {
+        Collections.sort(foods, new CustomComparator());
+    }
+
     // add Food item to the fridge
     // want this method to throw an exception !!!!!!!!!!!!!!!!!!!!!! NO sout print here
     public void putInFridge(Food food) {
@@ -21,13 +27,13 @@ public class Fridge {
     }
 
     // remove the expired food
-    public void remove() {
-        List<Food> foodToRemove = new ArrayList<>();
-        for (int i = 0; i < foods.size(); i++) {
-            if (!foods.get(i).isEdible()) {
-                foodToRemove.add(foods.get(i));
-            }
-        }
+    public void remove(List<Food> foodToRemove) {
+//        List<Food> foodToRemove = new ArrayList<>();
+//        for (int i = 0; i < foods.size(); i++) {
+//            if (!foods.get(i).isEdible()) {
+//                foodToRemove.add(foods.get(i));
+//            }
+//        }
         foods.removeAll(foodToRemove);
     }
 
@@ -51,8 +57,6 @@ public class Fridge {
     public int getCapacity() {
         return CAPACITY;
     }
-
-
 
 
 }

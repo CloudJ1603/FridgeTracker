@@ -2,12 +2,13 @@ package ui;
 
 import model.*;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
 // fridge tracker application
 public class FridgeTracker {
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_RESET = "\u001B[0m";
     private Fridge fridge;
     private Scanner input;
 
@@ -35,7 +36,6 @@ public class FridgeTracker {
             } else {
                 processCommand(command);
             }
-
         }
 
         System.out.println("\nGoodbye!");
@@ -66,7 +66,7 @@ public class FridgeTracker {
 
     // EFFECTS: displays menus of options to user
     private void displayMenu() {
-        System.out.println("\nSelect from:");
+        System.out.println("\nMain Menu: Select from the following options");
         System.out.println("\ta -> add new food item to the fridge");
         System.out.println("\ts -> show the current food in the fridge");
         System.out.println("\td -> discard the expired food");
@@ -146,16 +146,72 @@ public class FridgeTracker {
     // MODIFIES: this
     // EFFECTS: show all the food in the fridge
     private void doShowFoodList() {
-        List<Food> myFoodList = fridge.getFoodList();
+        List<Food> temp = fridge.getFoodList();
         System.out.println("\nHere are all the food items in the fridge: ");
+        System.out.printf("%-15s %-10s\n", "\tItems", "Remaining Days");
+        for (int i = 0; i < temp.size(); i++) {
+            if (temp.get(i).getExpiry() != 0) {
+                System.out.printf("%-15s %-10s\n", "\t" + temp.get(i).getName(), "" + temp.get(i).getExpiry());
+            } else {
+                System.out.printf(ANSI_RED + "%-15s %-10s\n", "\t" + temp.get(i).getName(), "" + temp.get(i).getExpiry() + ANSI_RESET);
+            }
+        }
+
+        System.out.println("Select from:");
+        System.out.println("\ts -> sort listed items based on days remaining before it expired");
+        System.out.println("\td -> discard the expired food");
+        String ans = input.next();
+        if (ans.equals("s")) {
+            doSort();
+        } else if (ans.equals("d")) {
+            doDiscard();
+        } else {
+            return;
+        }
+
+    }
+
+    //
+    private void doSort() {
+        fridge.customSort();
+
+        List<Food> myFoodList = fridge.getFoodList();
+        System.out.println("\nSort the items on remaining days (descending): ");
+        System.out.printf("%-15s %-10s\n", "\tItems", "Remaining Days");
         for (int i = 0; i < myFoodList.size(); i++) {
-            System.out.printf("%s%n\n", myFoodList.get(i).getName(),myFoodList.get(i).getExpiry());
+            if (myFoodList.get(i).getExpiry() != 0) {
+                System.out.printf("%-15s %-10s\n", "\t" + myFoodList.get(i).getName(), "" + myFoodList.get(i).getExpiry());
+            } else {
+                System.out.printf(ANSI_RED + "%-15s %-10s\n", "\t" + myFoodList.get(i).getName(), "" + myFoodList.get(i).getExpiry() + ANSI_RESET);
+            }
         }
     }
+
 
     // MODIFIES: this
     // EFFECTS: discard expired food in the fridge
     private void doDiscard() {
+        List<Food> foodToRemove = new ArrayList<>();
+        for (int i = 0; i < fridge.getFoodList().size(); i++) {
+            if (fridge.getFoodList().get(i).getExpiry() == 0) {
+                foodToRemove.add(fridge.getFoodList().get(i));
+            }
+        }
+        fridge.remove(foodToRemove);
+
+        System.out.println("\nRemove all the items that expire !!!");
+        System.out.println("Now everything should be edible.");
+        List<Food> myFoodList = fridge.getFoodList();
+        //System.out.println("\nHere are all the food items in the fridge: ");
+        System.out.printf("%-15s %-10s\n", "\tItems", "Remaining Days");
+        for (int i = 0; i < myFoodList.size(); i++) {
+            if (myFoodList.get(i).getExpiry() != 0) {
+                System.out.printf("%-15s %-10s\n", "\t" + myFoodList.get(i).getName(), "" + myFoodList.get(i).getExpiry());
+            } else {
+                System.out.printf(ANSI_RED + "%-15s %-10s\n", "\t" + myFoodList.get(i).getName(), "" + myFoodList.get(i).getExpiry() + ANSI_RESET);
+            }
+        }
+
 
     }
 

@@ -17,6 +17,9 @@ public abstract class Food {
     public Food() {
     }
 
+
+
+
     // public or protect ????
 
     protected abstract void freeze();
