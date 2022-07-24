@@ -35,10 +35,10 @@ among all housekeeping things.
 
 ## User Stories
 In the context of a refrigerator management application:
-- As a user, I want to be able to add items to my refrigerator.
+- As a user, I want to be able to add food to the fridge tracker.
+- As a user, I want to be able to remove food from the fridge tracker.
 - As a user, I want to be able to view a list of items within refrigerator in the order of approaching expire dates.
-- As a user, I want to be able to know which item has expired already. 
-- As a user, I want to be able to know if my refrigerator is full or not.
+- As a user, I want to be able to discard the expired food from the fridge tracker.
 - As a user, I want to be able to change the original expire date of items if I process the items (pickle, freeze, cook, etc.).
 
 ## A subtitle

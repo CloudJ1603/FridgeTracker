@@ -1,74 +1,56 @@
 package model;
 
-
+// an abstract class which is the superclass of all types of food
 public abstract class Food {
-    // constants for approximate food item size
-    private static final int LARGE = 4;
-    private static final int MEDIUM = 2;
-    private static final int SMALL = 1;
     // field
     protected String name;
     protected String type;
-    protected int expiry;
+    protected int remaining;
     protected int size;
-    protected boolean edible;
 
-    // constructor
+
+    // EFFECTS: construct Food object
     public Food() {
     }
 
-
-
-
-    // public or protect ????
-
-    protected abstract void freeze();
-
-    protected abstract void pickle();
-
-    protected abstract void cook();
-
     /* ----------------- getter ----------------------------  */
+    // EFFECTS: return the name of the Food object
     public String getName() {
         return name;
     }
 
-    public int getExpiry() {
-        return expiry;
+    // EFFECTS: return the remaining days of the Food object
+    public int getRemaining() {
+        return remaining;
     }
 
+    // EFFECTS: return the type of the Food object
     public String getType() {
         return type;
     }
 
-    public boolean isEdible() {
-        return edible;
-    }
-
-    public int getSize() {
-        return this.size;
-    }
 
     /* ----------------- setter ----------------------------  */
+    // MODIFIES: this
+    // EFFECTS: set up the name of the Food object
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setExpiry(int expiry) {
-        this.expiry = expiry;
+    // REQUIRES: the input parameter must be a positive integer
+    // MODIFIES: this
+    // EFFECTS: set up the remaining (days) of the Food object
+    public void setRemaining(int remaining) {
+        this.remaining = remaining;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
 
-    public void setSize(String size) {
-        if (size.equals("S")) {
-            this.size = SMALL;
-        } else if (size.equals("M")) {
-            this.size = MEDIUM;
-        } else {
-            this.size = LARGE;
+    /* ----------------- modifier ----------------------------  */
+    // MODIFIES: this
+    // EFFECTS: forward to next day, equivalent to decrement the remaining (days)
+    public void nextDay() {
+        if (remaining != 0) {
+            remaining--;
         }
     }
 
