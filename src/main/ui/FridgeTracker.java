@@ -6,6 +6,7 @@ import java.util.*;
 
 // fridge tracker application
 public class FridgeTracker {
+    // field and constants
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
     private Fridge fridge;
@@ -150,10 +151,13 @@ public class FridgeTracker {
 
     // MODIFIES: this
     // EFFECTS: show all the food recorded in the fridge tracker
-    //          if (item is not expired)
-    //              item will be printed out in default color
+    //          if (the fridge is empty)
+    //              print "fridge is empty"
     //          else
-    //              item will be printed out in red
+    //              if (item is not expired)
+    //                  item will be printed out in default color
+    //              else
+    //                  item will be printed out in red
     private void doShowFoodList() {
         if (fridge.getFoodList().isEmpty()) {
             System.out.println("\n----- The fridge is empty, time for grocery shopping! ----- ");

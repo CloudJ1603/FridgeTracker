@@ -1,54 +1,47 @@
-# A Refrigerator Management System
+# Fridge Tracker
 
 ## Introduction
-I plan to design a refrigerator management application with expire date reminder.
+I propose to design a fridge tracker application which helps users keep track of the remaining days 
+of the food they put in the fridge.
 
-***What will the application do?***
+### ***What will the application do?***
 
-Users can add items like ingredients, food remaining and drinks 
-to the refrigerator management system with a specific expire date. 
-The application would order these items given the closest expiry date, 
-and outline the items which have been expired. 
+Users can add food of type vegetables, fruit, meat or leftover 
+to the fridge tracker with user specified remaining days. 
+The application would automatically order these food items in terms of the
+remaining days in descending order, that being said, the food item that will
+expire soon will be listed on the top. The application will also outline
+the items which have been expired in red. Moreover, user can discard the food 
+items that have already expired (with zero remaining days and highlighted in red). 
 
-Moreover, user can modify the original expire date if they process 
-the food ingredients. For example, there were some cucumbers that are 
-supposed to expire in three day, but user decided to pickle them, therefore
-the expiry date becomes "forever". Also, user can discard the items from the 
-application once they junk or finish those items. 
+To simulate the real-life circumstance, user can choose to "forward to the next day", which 
+decrement the remaining days of all food items in the fridge tracker by one.
 
-***Who will use it?***
+### ***Who will use it?***
 
-The target user would be people who are tired of conventional 
-refrigerator experience, including but not limited to throwing 
-rotted ingredients, clearing up smelling remaining, and overestimating 
-the space. Basically, everyone who has a refrigerator, and want to 
-have a more manageable way of using it, would be a target user of 
+The target users would be people who are tired of conventional 
+fridge experience, including but not limited to throwing 
+rotted ingredients, clearing up smelling leftover, and totally forgetting 
+the things purchased. Basically, everyone who has a fridge, and want to 
+have a more manageable way of using it, would be the target user of 
 this application.
 
 
-***Why is this project of interest to you?***
+### ***Why is this project of interest to you?***
 
 As a student with huge workloads and tight deadlines all year round. 
 It has been a headache for me to maintain a healthy and manageable life-style. 
-The management of items in refrigerator is one of the most annoys things 
+The management of items in fridge is the most annoying one 
 among all housekeeping things. 
 
 ## User Stories
-In the context of a refrigerator management application:
-- As a user, I want to be able to add food to the fridge tracker.
-- As a user, I want to be able to remove food from the fridge tracker.
-- As a user, I want to be able to view a list of items within refrigerator in the order of approaching expire dates.
-- As a user, I want to be able to discard the expired food from the fridge tracker.
-- As a user, I want to be able to change the original expire date of items if I process the items (pickle, freeze, cook, etc.).
+In the context of a fridge tracker application:
+- As a user, I want to be able to ***add*** food items to the fridge tracker.
+- As a user, I want the fridge track can automatically ***sort*** the items I added with respect to the 
+    remaining days in descending order.
+- As a user, I want to be able to ***remove*** food items from the fridge tracker.
+- As a user, I want to be able to see all the food items in a ***table view***.
+- As a user, I want to be able to ***discard*** the expired food from the fridge tracker.
+- As a user, I want the fridge tracker can ***simulate*** the passing of days, and change the remaining days
+   of the food items accordingly. 
 
-## A subtitle
-
-Some *functionality* I expect to realize:
-- add new item 
-- remove expired item
-- process the item
-
-An example of text with **bold** and *italic* fonts.  
-
-## Future Implementation
-I plan to 

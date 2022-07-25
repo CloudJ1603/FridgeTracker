@@ -6,6 +6,7 @@ import java.util.List;
 
 // a fridge tracker which holds and manipulates a list of food
 public class Fridge {
+    // fields
     private List<Food> foods;
 
     // construct Fridge object
@@ -32,6 +33,8 @@ public class Fridge {
         foods.removeAll(foodToRemove);
     }
 
+    // MODIFIES: this
+    // EFFECTS: change the remaining days of all food items in the fridge tracker
     public void nextDay() {
         int n = foods.size();
         for (Food food : foods) {
