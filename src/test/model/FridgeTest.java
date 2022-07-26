@@ -12,10 +12,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class FridgeTest {
 
     private Fridge fridge;
+    private Food f1;
+    private Food f2;
+    private Food f3;
+
+    Category c1 = Category.values()[0];
+    Category c2 = Category.values()[1];
+    Category c3 = Category.values()[2];
 
     @BeforeEach
     public void setup () {
-        fridge = new Fridge();
+        fridge = new Fridge("myFridge");
     }
 
     @Test
@@ -25,12 +32,9 @@ class FridgeTest {
 
     @Test
     public void testCustomSort() {
-        Food f1 = new Fruit();
-        f1.setRemaining(3);
-        Food f2 = new Vegetable();
-        f2.setRemaining(2);
-        Food f3 = new Meat();
-        f3.setRemaining(1);
+        f1 = new Food("lettuce",c1,3);
+        f2 = new Food("apple", c2, 2);
+        f3 = new Food("beef", c3, 1);
 
         fridge.putInFridge(f1);
         fridge.putInFridge(f2);
@@ -45,9 +49,6 @@ class FridgeTest {
 
     @Test
     public void testPutInFridge() {
-        Food f1 = new Fruit();
-        Food f2 = new Vegetable();
-
         fridge.putInFridge(f1);
         assertEquals(f1,fridge.getFoodList().get(0));
         fridge.putInFridge(f2);
@@ -57,9 +58,6 @@ class FridgeTest {
 
     @Test
     public void testRemove() {
-        Food f1 = new Fruit();
-        Food f2 = new Vegetable();
-
         fridge.putInFridge(f1);
         assertEquals(f1,fridge.getFoodList().get(0));
 
@@ -72,10 +70,8 @@ class FridgeTest {
 
     @Test
     public void testNextDay() {
-        Food f1 = new Fruit();
-        f1.setRemaining(1);
-        Food f2 = new Vegetable();
-        f2.setRemaining(2);
+        f1 = new Food("lettuce",c1,1);
+        f2 = new Food("apple", c2, 2);
 
         fridge.putInFridge(f1);
         fridge.putInFridge(f2);

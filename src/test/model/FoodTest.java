@@ -7,24 +7,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FoodTest {
     private Food f1;
-    private Food f2;
-    private Food f3;
-    private Food f4;
 
     @BeforeEach
     public void setup() {
-        f1 = new Vegetable();
-        f2 = new Fruit();
-        f3 = new Meat();
-        f4 = new Leftover();
+        Category c1 = Category.values()[0];
+        f1 = new Food("lettuce",c1,10);
     }
 
     @Test
     public void testConstructor() {
-        assertEquals("v", f1.getType());
-        assertEquals("f", f2.getType());
-        assertEquals("m", f3.getType());
-        assertEquals("l", f4.getType());
+        assertEquals(Category.values()[0], f1.getCategory());
+        assertEquals("lettuce",f1.getName());
+        assertEquals(10,f1.getRemaining());
     }
 
     @Test

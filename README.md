@@ -36,6 +36,7 @@ among all housekeeping things.
 
 ## User Stories
 In the context of a fridge tracker application:
+## Phase 0, 1
 - As a user, I want to be able to ***add*** food items to the fridge tracker.
 - As a user, I want the fridge track can automatically ***sort*** the items I added with respect to the 
     remaining days in descending order.
@@ -44,4 +45,6 @@ In the context of a fridge tracker application:
 - As a user, I want to be able to ***discard*** the expired food from the fridge tracker.
 - As a user, I want the fridge tracker can ***simulate*** the passing of days, and change the remaining days
    of the food items accordingly. 
-
+## Phase 2
+- As a user, I want to be able to save my fridge tracker's data to file
+- As a user, I want to be able to load my fridge tracker's data from file

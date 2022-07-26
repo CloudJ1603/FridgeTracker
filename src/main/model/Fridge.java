@@ -1,16 +1,22 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 // a fridge tracker which holds and manipulates a list of food
-public class Fridge {
+public class Fridge implements Writable {
     // fields
     private List<Food> foods;
+    private String name;
 
     // construct Fridge object
-    public Fridge() {
+    public Fridge(String name) {
+        this.name = name;
         this.foods = new ArrayList<>();
     }
 
@@ -47,5 +53,30 @@ public class Fridge {
     public List<Food> getFoodList() {
         return foods;
     }
+
+    // EFFECTS: return the name of the Fridge object
+    public String getName() {
+        return name;
+    }
+
+    /* ----------------------- Json ------------------------------ */
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("foods", foodToJson());
+        return json;
+    }
+
+    public JSONArray foodToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Food food: foods) {
+            jsonArray.put(food.toJson());
+        }
+
+        return jsonArray;
+    }
+
 
 }

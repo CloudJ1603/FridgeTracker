@@ -1,16 +1,20 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 // an abstract class which is the superclass of all types of food
-public abstract class Food {
+public class Food implements Writable {
     // field
     protected String name;
-    protected String type;
     protected int remaining;
-    protected int size;
-
+    private Category category;
 
     // EFFECTS: construct Food object
-    public Food() {
+    public Food(String name, Category category, int remaining) {
+        this.name = name;
+        this.category = category;
+        this.remaining = remaining;
     }
 
     /* ----------------- getter ----------------------------  */
@@ -25,8 +29,8 @@ public abstract class Food {
     }
 
     // EFFECTS: return the type of the Food object
-    public String getType() {
-        return type;
+    public Category getCategory() {
+        return category;
     }
 
 
@@ -54,4 +58,13 @@ public abstract class Food {
         }
     }
 
+    /* --------------------- json ----------------------- */
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("category", category);
+        json.put("remaining", remaining);
+        return json;
+    }
 }

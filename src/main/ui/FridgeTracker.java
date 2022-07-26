@@ -1,16 +1,21 @@
 package ui;
 
 import model.*;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import java.util.*;
 
 // fridge tracker application
 public class FridgeTracker {
     // field and constants
+    private static final String JSON_STORE = "./data/myFridge.json";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
     private Fridge fridge;
     private Scanner input;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs the tacker application
     public FridgeTracker() {
@@ -69,7 +74,7 @@ public class FridgeTracker {
     // MODIFIES: this
     // EFFECTS: initializes fridge
     private void init() {
-        fridge = new Fridge();
+        fridge = new Fridge("myFridge");
         input = new Scanner(System.in);
         input.useDelimiter("\n");
     }
@@ -88,50 +93,33 @@ public class FridgeTracker {
     // MODIFIES: this
     // EFFECTS: add new food item to the fridge
     private void doAddFood() {
-        Food newFood;
-        String type = enterType();
-        newFood = createFoodItem(type);
-        newFood.setName(enterName());
-        newFood.setRemaining(enterExpiry());
+
+        Category category = enterCategory();
+        String name = enterName();
+        int remaining = enterExpiry();
+
+        Food newFood = new Food(name, category, remaining);
 
         fridge.putInFridge(newFood);
         System.out.println("\n" + newFood.getName().toUpperCase() + " has been added to the fridge tracker.");
     }
 
-    // MODIFIES: this
-    // EFFECTS: instantiate new food item
-    private Food createFoodItem(String type) {
-        Food newFood = null;
-        switch (type) {
-            case "v":
-                newFood = new Vegetable();
-                break;
-            case "f":
-                newFood = new Fruit();
-                break;
-            case "m":
-                newFood = new Meat();
-                break;
-            case "l":
-                newFood = new Leftover();
-                break;
-            default:
-                System.out.print("Invalid Type!");
-                break;
-        }
-        return newFood;
-    }
 
     // REQUIRES: input must be one of "v","f","m","l"
     // EFFECTS: displays options for user to enter type of the food item added
-    private String enterType() {
-        System.out.println("\nEnter the type of the item: ");
-        System.out.println("Select from:");
-        System.out.println("\tv -> Vegetable");
-        System.out.println("\tf -> Fruit");
-        System.out.println("\tm -> Meat");
-        System.out.println("\tl -> LeftOver");
-        return input.next();
+    private Category enterCategory() {
+        System.out.println("Please select a category for the food");
+
+        int menuLabel = 1;
+        for (Category c : Category.values()) {
+            System.out.println(menuLabel + ": " + c);
+            menuLabel++;
+        }
+
+        int menuSelection = input.nextInt();
+        return Category.values()[menuSelection - 1];
+
+
     }
 
     // REQUIRES: input must be on non-empty string
@@ -165,18 +153,18 @@ public class FridgeTracker {
             fridge.customSort();
             List<Food> temp = fridge.getFoodList();
             System.out.println("\nHere are all the food items in the fridge: ");
-            System.out.printf("%-15s %-25s %-10s\n", "\tItems", "Remaining Days", "Type");
+            System.out.printf("%-20s %-25s %-10s\n", "\tItems", "Remaining Days", "Type");
             for (Food food : temp) {
                 if (food.getRemaining() != 0) {
-                    System.out.printf("%-15s %-25s %-10s\n",
+                    System.out.printf("%-20s %-25s %-10s\n",
                             "\t" + food.getName(),
                             "" + food.getRemaining(),
-                            food.getType());
+                            food.getCategory());
                 } else {
-                    System.out.printf(ANSI_RED + "%-15s %-25s %-10s\n",
+                    System.out.printf(ANSI_RED + "%-20s %-25s %-10s\n",
                             "\t" + food.getName(),
                             "" + food.getRemaining(),
-                            food.getType() + ANSI_RESET);
+                            food.getCategory() + ANSI_RESET);
                 }
             }
         }
