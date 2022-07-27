@@ -33,7 +33,6 @@ public class Food implements Writable {
         return category;
     }
 
-
     /* ----------------- setter ----------------------------  */
     // MODIFIES: this
     // EFFECTS: set up the name of the Food object
@@ -59,6 +58,8 @@ public class Food implements Writable {
     }
 
     /* --------------------- json ----------------------- */
+    // EFFECTS: override the toJson method, to convert the fields of
+    //          Food object to Json document
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

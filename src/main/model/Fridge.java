@@ -5,7 +5,6 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 // a fridge tracker which holds and manipulates a list of food
@@ -60,6 +59,8 @@ public class Fridge implements Writable {
     }
 
     /* ----------------------- Json ------------------------------ */
+    // EFFECTS: override the toJson method, to convert the fields of
+    //          Fridge object to Json document
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -68,6 +69,8 @@ public class Fridge implements Writable {
         return json;
     }
 
+    // EFFECTS: convert all Food item in List<Food> foods to JSONObject
+    //          , add them to JSONArray, and return the JSONArray
     public JSONArray foodToJson() {
         JSONArray jsonArray = new JSONArray();
 
@@ -77,6 +80,5 @@ public class Fridge implements Writable {
 
         return jsonArray;
     }
-
 
 }
