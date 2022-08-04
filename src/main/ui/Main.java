@@ -4,7 +4,12 @@ package ui;
 public class Main {
     // main
     public static void main(String[] args) {
-        // run the fridge tracker application
+
+        /* ---------------------- launch page ---------------------- */
+//        new LaunchPage();
+
         new FridgeTracker();
+//        new FridgeTrackerV0();
+
     }
 }

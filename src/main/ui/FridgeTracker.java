@@ -4,253 +4,192 @@ import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
 
-// fridge tracker application
-public class FridgeTracker {
-    // field and constants
+public class FridgeTracker extends JFrame implements ActionListener {
+
     private static final String JSON_STORE = "./data/myFridgeOne.json";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_RESET = "\u001B[0m";
     private Fridge fridge;
-    private Scanner input;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
-    // EFFECTS: initializes and runs the tacker application
+    // frame
+    private JFrame frame;
+    private JMenuBar menuBar;
+    private JMenu file;
+    private JMenu help;
+    private JMenu exit;
+    private JMenuItem load;
+    private JMenuItem save;
+
+    // panel
+    private JPanel panelDisplay;
+    private JPanel panelCommand;
+    private JPanel panelAdd;
+    private JPanel panelRemove;
+    private JPanel panelDiscard;
+
+
+    // table
+    JTable table = new JTable();
+
+    // button
+    private JButton add;
+    private JButton remove;
+    private JButton discard;
+    private JButton nextDay;
+
     public FridgeTracker() {
         fridge = new Fridge("my Fridge One");
-        input = new Scanner(System.in);
-        input.useDelimiter("\n");
+        frame = new JFrame();
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
-        runTracker();
+
+        initFrame();
+        initMenuBar();
+        initPanel();
+
+        frame.setVisible(true);
     }
 
-    // while loop happens here
-    // MODIFIES: THIS
-    // EFFECTS: process the user input
-    private void runTracker() {
-        boolean keepGoing = true;
-        String command = "";
-
-        while (keepGoing) {
-            if (!command.equals("n")) {
-                doShowFoodList();
-            }
-            displayMenu();
-            command = input.next();
-            command = command.toLowerCase();
-
-            if (command.equals("q")) {
-                keepGoing = false;
-            } else {
-                processCommand(command);
-            }
-        }
-        System.out.println("\nGoodbye!");
+    // EFFECTS: return the fridge item
+    public Fridge getFridge() {
+        return fridge;
     }
 
-    // MODIFIES: this
-    // EFFECTS: processes user command
-    private void processCommand(String command) {
-        switch (command) {
-            case "a":
-                doAddFood(command);
-                break;
-            case "d":
-                doDiscard();
-                break;
-            case "r":
-                doRemove(command);
-                break;
-            case "s":
-                doSave();
-                break;
-            case "l":
-                doLoad();
-                break;
-            case "n":
-                doNextDay(command);
-                break;
-            default:
-                System.out.println("Selection not valid...");
-                break;
-        }
+    public void initFrame() {
+        frame.setTitle("Fridge Tracker");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new GridLayout(2, 1));
+//        this.setLayout(null);
+        frame.setResizable(true);
+        frame.setSize(1200, 1200);
+
     }
 
-    // EFFECTS: displays the main menu
-    private void displayMenu() {
-        System.out.println("\nMain Menu: Select from the following options");
-        System.out.println("\ta -> add new food item to the fridge tracker");
-        System.out.println("\tr -> remove food item from the fridge tracker");
-        System.out.println("\td -> discard the expired food");
-        System.out.println("\ts -> save fridge tracker data to file");
-        System.out.println("\tl -> load fridge tracker date from file");
-        System.out.println("\tq -> quit");
-        System.out.println("\t-----------------------------------------------");
-        System.out.println("\tn -> forward to next day");
+    public void initMenuBar() {
+        menuBar = new JMenuBar();
+        file = new JMenu("File");
+        help = new JMenu("Help");
+        exit = new JMenu("Exit");
+        load = new JMenuItem("Load");
+        save = new JMenuItem("Save");
+
+        load.addActionListener(this);
+        save.addActionListener(this);
+
+        file.add(load);
+        file.add(save);
+
+        menuBar.add(file);
+        menuBar.add(help);
+        menuBar.add(exit);
+
+        /* ------------------------ frame ----------------------------- */
+        frame.setJMenuBar(menuBar);
     }
 
-    // EFFECTS: show sub-menu-forward
-    private void showSubMenuForward() {
-        System.out.println("\nSelect from the following options");
-        System.out.println("\tn -> keep forwarding");
-        System.out.println("\to -> return to the main menu");
+//    public void initTable() {
+//        String[] columnNames = {"Name", "Category", "Remaining Days"};
+//        Object[][] data;
+//
+//        List<Food> foods = fridge.getFoodList();
+//        int n = foods.size();
+//
+//        for (int i = 0; i < n; i++) {
+//            Food temp = foods.get(i);
+//            data[i][0] = temp.getName();
+//            data[i][1] = temp.getCategory();
+//            data[i][2] = temp.getRemaining();
+//        }
+//
+//        table = new JTable(data, columnNames);
+//    }
+
+    public void initTable() {
+        String[] columnNames = {"Name", "Category", "Remaining Days"};
+
+        Object[][] data = {
+                {"Apple", "Fruit", new Integer(7)},
+                {"Lettuce", "Vegetable", new Integer(3)}
+        };
+
+        table = new JTable(data, columnNames);
+        table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+        table.setFillsViewportHeight(true);
+        JScrollPane scrollPane = new JScrollPane(table);
+        table.add(scrollPane);
     }
 
-    // EFFECTS: show sub-menu-add
-    private void showSubMenuAdd() {
-        System.out.println("\nSelect from the following options");
-        System.out.println("\ta -> keep adding");
-        System.out.println("\to -> return to the main menu");
+
+    public void initPanel() {
+
+//        initTable();
+
+        frame.add(getPanelDisplay());
+
+        frame.add(getPanelCommand());
+
     }
 
-    // EFFECTS: show sub-menu-remove
-    private void showSubMenuRemove() {
-        System.out.println("\nSelect from the following options");
-        System.out.println("\tr -> keep removing");
-        System.out.println("\to -> return to the main menu");
+    public void addButton() {
+        add = new JButton("Add");
+        add.addActionListener(this);
+
     }
 
-    // MODIFIES: this
-    // EFFECTS: add new food item to the fridge
-    private void doAddFood(String cmd) {
-        while (cmd.equals("a")) {
-            Food newFood = instantiateFood();
-            fridge.putInFridge(newFood);
-            System.out.println("\n" + newFood.getName().toUpperCase() + " has been added to the fridge tracker.");
-            showSubMenuAdd();
-            cmd = input.next();
-        }
+    public void removeButton() {
+        remove = new JButton("Remove");
+        remove.addActionListener(this);
+
     }
 
-    // EFFECTS: instantiates new Food item
-    private Food instantiateFood() {
-        Category category = enterCategory();
-        String name = enterName();
-        int remaining = enterExpiry();
-        return new Food(name, category, remaining);
+    public JPanel getPanelDisplay() {
+        panelDisplay = new JPanel();
+        panelDisplay.setBackground(Color.CYAN);
+        panelDisplay.setBounds(0, 0, 1200, 600);
+        panelDisplay.setLayout(new BorderLayout());
+
+        return panelDisplay;
     }
 
-    // REQUIRES: input must be one of "v","f","m","l"
-    // EFFECTS: displays options for user to enter type of the food item added
-    private Category enterCategory() {
-        System.out.println("\nPlease select a category for the food");
+    public JPanel getPanelCommand() {
+        addButton();
+        removeButton();
 
-        int menuLabel = 1;
-        for (Category c : Category.values()) {
-            System.out.println(menuLabel + ": " + c);
-            menuLabel++;
-        }
+        discard = new JButton("Discard");
+        nextDay = new JButton("Next Day");
 
-        int menuSelection = input.nextInt();
-        return Category.values()[menuSelection - 1];
+        discard.addActionListener(this);
+        nextDay.addActionListener(this);
+
+        panelCommand = new JPanel();
+        panelCommand.setBackground(Color.GRAY);
+        panelCommand.setBounds(0, 600, 1200, 600);
+        panelCommand.setLayout(new GridLayout(4, 1));
+
+        panelCommand.add(add);
+        panelCommand.add(remove);
+        panelCommand.add(discard);
+        panelCommand.add(nextDay);
+
+        return panelCommand;
     }
 
-    // REQUIRES: input must be on non-empty string
-    // EFFECTS: displays options for user to enter name of the food item added
-    private String enterName() {
-        System.out.println("\nEnter the name of item to put in the fridge: ");
-        return input.next();
+
+    public void runTracker() {
+
     }
-
-    // REQUIRES: input must be a positive integer
-    // EFFECTS: displays options for user to enter remaining days of the food item added
-    private int enterExpiry() {
-        System.out.println("\nEnter the number of days remaining before it expires: ");
-        return input.nextInt();
-    }
-
-    // MODIFIES: this
-    // EFFECTS: show all the food recorded in the fridge tracker
-    //          if (the fridge is empty)
-    //              print "fridge is empty"
-    //          else
-    //              if (item is not expired)
-    //                  item will be printed out in default color
-    //              else
-    //                  item will be printed out in red
-    private void doShowFoodList() {
-        if (fridge.getFoodList().isEmpty()) {
-            System.out.println("\n----- The fridge is empty, time for grocery shopping! ----- ");
-        } else {
-            fridge.customSort();
-            List<Food> temp = fridge.getFoodList();
-            System.out.println("\nHere are all the food items in the fridge: ");
-            System.out.printf("%-20s %-25s %-10s\n", "\tItems", "Remaining Days", "Type");
-            for (Food food : temp) {
-                if (food.getRemaining() != 0) {
-                    System.out.printf("%-20s %-25s %-10s\n",
-                            "\t" + food.getName(),
-                            "" + food.getRemaining(),
-                            food.getCategory());
-                } else {
-                    System.out.printf(ANSI_RED + "%-20s %-25s %-10s\n",
-                            "\t" + food.getName(),
-                            "" + food.getRemaining(),
-                            food.getCategory() + ANSI_RESET);
-                }
-            }
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: discard expired food in the fridge
-    private void doDiscard() {
-        List<Food> foodToRemove = new ArrayList<>();
-        for (int i = 0; i < fridge.getFoodList().size(); i++) {
-            if (fridge.getFoodList().get(i).getRemaining() == 0) {
-                foodToRemove.add(fridge.getFoodList().get(i));
-            }
-        }
-        fridge.remove(foodToRemove);
-        System.out.println("\nAll the expired food has been removed.");
-    }
-
-    // REQUIRED: the current fridge track must contain the name of the item to remove
-    // MODIFIES: this
-    // EFFECTS: remove the item with the same name as user input from the fridge track
-    private void doRemove(String cmd) {
-        while (cmd.equals("r")) {
-            System.out.println("\nEnter the exact name of the item to be removed: ");
-            String itemToRemove = input.next();
-            Food temp = null;
-            List<Food> foodToRemove = new ArrayList<>();
-            for (int i = 0; i < fridge.getFoodList().size(); i++) {
-                temp = fridge.getFoodList().get(i);
-                if (temp.getName().equals(itemToRemove)) {
-                    foodToRemove.add(temp);
-                    break;
-                }
-            }
-
-            if (foodToRemove.isEmpty()) {
-                System.out.println("\nNo such food exists in current fridge tracker!");
-            } else {
-                fridge.remove(foodToRemove);
-                System.out.println("\n" + temp.getName().toUpperCase() + " has been removed from the fridge tracker.");
-            }
-
-            showSubMenuRemove();
-            cmd = input.next();
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: decrement the remaining days for each food in the food list by one
-    private void doNextDay(String cmd) {
-        while (cmd.equals("n")) {
-            fridge.nextDay();
-            doShowFoodList();
-            showSubMenuForward();
-            cmd = input.next();
-        }
-    }
-
     /* ----------------- save and load ---------------------------*/
+
     // EFFECTS: save the fridge tracker data to file
     private void doSave() {
         try {
@@ -272,5 +211,35 @@ public class FridgeTracker {
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
+    }
+
+    // EFFECTS: performs the action
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        //load
+        if (e.getSource() == load) {
+            doLoad();
+            String message = "Loaded " + fridge.getName() + " from " + JSON_STORE;
+            String title = "Load File";
+            JOptionPane.showConfirmDialog(null, message,title, JOptionPane.PLAIN_MESSAGE);
+        }
+
+        if (e.getSource() == save) {
+            doSave();
+            String message = "Saved " + fridge.getName() + " to " + JSON_STORE;
+            String title = "Save File";
+            JOptionPane.showConfirmDialog(null, message,title, JOptionPane.PLAIN_MESSAGE);
+        }
+
+        // MODIFIES: this
+        // EFFECTS: add new food item to the fridge
+        if (e.getSource() == add) {
+            NewAddWindow addWindow = new NewAddWindow();
+            Food newFood = addWindow.returnFood();
+            fridge.putInFridge(newFood);
+        }
+
+
     }
 }

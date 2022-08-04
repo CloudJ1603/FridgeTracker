@@ -1,25 +1,4 @@
 {
-    "foods": [
-        {
-            "name": "meal4",
-            "category": "LEFTOVER",
-            "remaining": 2
-        },
-        {
-            "name": "beef",
-            "category": "MEAT",
-            "remaining": 4
-        },
-        {
-            "name": "lettuce",
-            "category": "VEGETABLE",
-            "remaining": 5
-        },
-        {
-            "name": "apple",
-            "category": "FRUIT",
-            "remaining": 7
-        }
-    ],
+    "foods": [],
     "name": "my Fridge One"
 }

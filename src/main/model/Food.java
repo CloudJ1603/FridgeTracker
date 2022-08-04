@@ -47,6 +47,14 @@ public class Food implements Writable {
         this.remaining = remaining;
     }
 
+    // REQUIRES: the input parameter must be of type Category
+    // MODIFIES: this
+    // EFFECTS: set up the category of the Food object
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    ;
 
     /* ----------------- modifier ----------------------------  */
     // MODIFIES: this
