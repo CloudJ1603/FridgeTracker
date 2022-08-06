@@ -1,4 +1,20 @@
 {
-    "foods": [],
+    "foods": [
+        {
+            "name": "lettuce",
+            "category": "VEGETABLE",
+            "remaining": 3
+        },
+        {
+            "name": "banana",
+            "category": "FRUIT",
+            "remaining": 5
+        },
+        {
+            "name": "apple",
+            "category": "FRUIT",
+            "remaining": 10
+        }
+    ],
     "name": "my Fridge One"
 }
