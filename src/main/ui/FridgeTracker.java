@@ -16,23 +16,21 @@ import java.util.List;
 public class FridgeTracker extends JFrame implements ActionListener {
 
     private static final String JSON_STORE = "./data/myFridgeOne.json";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_RESET = "\u001B[0m";
     private Fridge fridge;
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
+    private final JsonWriter jsonWriter;
+    private final JsonReader jsonReader;
 
     // frame
-    private JFrame frame;
+    private final JFrame frame;
     private JMenuBar menuBar;
     private JMenu file;
     private JMenu help;
-    private JMenu exit;
+    private JMenuItem guide;
+    private JMenuItem exit;
     private JMenuItem load;
     private JMenuItem save;
 
     // all the panels
-    private JPanel panelDisplay;
     private JPanel panelCommand;
     private JPanel panelAdd;
     private JPanel panelRemove;
@@ -42,16 +40,10 @@ public class FridgeTracker extends JFrame implements ActionListener {
     // panel display
     private JTextArea textArea;
 
-    // panel add
-    private JLabel nameLabel;
-    private JLabel categoryLabel;
-    private JLabel remainingDaysLabel;
-
     private JButton addItem;
     private JTextField enterName;
     private JTextField enterRemainingDays;
-    private JComboBox enterCategory;
-
+    private JComboBox<Category> enterCategory;
 
     // panel remove
     private JButton removeItem;
@@ -63,7 +55,7 @@ public class FridgeTracker extends JFrame implements ActionListener {
     // panel nextDay
     private JButton nextDay;
 
-
+    //  EFFECTS: initializes and runs the fridge tacker application
     public FridgeTracker() {
         fridge = new Fridge("my Fridge One");
         frame = new JFrame();
@@ -77,41 +69,43 @@ public class FridgeTracker extends JFrame implements ActionListener {
         frame.setVisible(true);
     }
 
-    // EFFECTS: return the fridge item
-    public Fridge getFridge() {
-        return fridge;
-    }
-
+    // EFFECTS: initialize the overall frame
     public void initFrame() {
         frame.setTitle("Fridge Tracker");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout(2, 1));
-//        this.setLayout(null);
         frame.setResizable(true);
         frame.setSize(1200, 1200);
         frame.setJMenuBar(menuBar);
     }
 
+    // EFFECTS: initialize the menu-bar
     public void initMenuBar() {
         menuBar = new JMenuBar();
         file = new JMenu("File");
         help = new JMenu("Help");
-        exit = new JMenu("Exit");
+        exit = new JMenuItem("Exit");
         load = new JMenuItem("Load");
         save = new JMenuItem("Save");
+        guide = new JMenuItem("Guide");
 
+        guide.addActionListener(this);
+        exit.addActionListener(this);
         load.addActionListener(this);
         save.addActionListener(this);
 
+
         file.add(load);
         file.add(save);
+        file.add(exit);
+
+        help.add(guide);
 
         menuBar.add(file);
         menuBar.add(help);
-        menuBar.add(exit);
     }
 
-
+    // EFFECTS: initial textarea and command panel, then add them to the frame
     public void initPanel() {
 
         initTextArea();
@@ -121,13 +115,14 @@ public class FridgeTracker extends JFrame implements ActionListener {
         frame.add(panelCommand);
     }
 
+    // EFFECTS: initialize the textarea
     public void initTextArea() {
         textArea = new JTextArea();
         textArea.setFont(new Font("Consolas", Font.PLAIN, 25));
         textArea.setText("\n----- The fridge is empty, time for grocery shopping! ----- ");
     }
 
-
+    // initialize the panel for all commands
     public void initPanelCommand() {
         panelCommand = new JPanel();
         panelCommand.setBackground(Color.GRAY);
@@ -150,24 +145,27 @@ public class FridgeTracker extends JFrame implements ActionListener {
         panelCommand.add(panelNextDay);
     }
 
+    // EFFECTS: set up the panel used for Add Item button
     public void setPanelAdd() {
 
         enterName = new JTextField();
         enterName.setPreferredSize(new Dimension(250, 40));
-        enterName.setFont(new Font("Consolas", Font.PLAIN, 25));
+        enterName.setFont(new Font("Consolas", Font.BOLD, 25));
         enterName.setText("Food Name");
 
         Category[] c = Category.values();
-        enterCategory = new JComboBox(c);
+        enterCategory = new JComboBox<>(c);
+        enterCategory.setFont(new Font("Consolas", Font.BOLD, 25));
 
         enterRemainingDays = new JTextField();
         enterRemainingDays.setPreferredSize(new Dimension(250, 40));
-        enterRemainingDays.setFont(new Font("Consolas", Font.PLAIN, 25));
+        enterRemainingDays.setFont(new Font("Consolas", Font.BOLD, 25));
         enterRemainingDays.setText("Remaining Days");
 
         addItem = new JButton();
+        addItem.setFont(new Font("Consolas", Font.BOLD, 25));
         addItem.addActionListener(this);
-        addItem.setText("Add to fridge tracker");
+        addItem.setText("Add");
 
         panelAdd.add(enterName);
         panelAdd.add(enterCategory);
@@ -175,36 +173,44 @@ public class FridgeTracker extends JFrame implements ActionListener {
         panelAdd.add(addItem);
     }
 
+    // EFFECTS: set up the panel used for Remove Item button
     public void setPanelRemove() {
         enterNameToRemove = new JTextField();
         enterNameToRemove.setPreferredSize(new Dimension(250, 40));
-        enterNameToRemove.setFont(new Font("Consolas", Font.PLAIN, 25));
+        enterNameToRemove.setFont(new Font("Consolas", Font.BOLD, 25));
         enterNameToRemove.setText("Food Name");
 
         removeItem = new JButton();
+        removeItem.setFont(new Font("Consolas", Font.BOLD, 25));
         removeItem.addActionListener(this);
-        removeItem.setText("Remove from fridge tracker");
+        removeItem.setText("Remove");
 
         panelRemove.add(enterNameToRemove);
         panelRemove.add(removeItem);
     }
 
+    // EFFECTS: set up the panel used for Discard Item button
     public void setPanelDiscard() {
         discardItem = new JButton();
         discardItem.addActionListener(this);
         discardItem.setText("Discard Expired Items");
+        discardItem.setFont(new Font("Consolas", Font.BOLD, 25));
 
         panelDiscard.add(discardItem);
     }
 
+    // EFFECTS: set up the panel used for Next Day button
     public void setPanelNextDay() {
         nextDay = new JButton();
         nextDay.addActionListener(this);
         nextDay.setText("Next Day");
+        nextDay.setFont(new Font("Consolas", Font.BOLD, 25));
 
         panelNextDay.add(nextDay);
     }
 
+    // MODIFIES: this
+    // EFFECTS: show all the food recorded in the fridge tracker
     private void doShowFoodList() {
         textArea.setText("");
         if (fridge.getFoodList().isEmpty()) {
@@ -213,18 +219,12 @@ public class FridgeTracker extends JFrame implements ActionListener {
             fridge.customSort();
             List<Food> temp = fridge.getFoodList();
             textArea.append("\nHere are all the food items in the fridge: ");
-            textArea.append("\n\tItems" + "\t\tRemaining Days" + "\t\tType");
+            textArea.append("\n\tItems" + "\t\t\tRemaining Days" + "\t\tType");
             for (Food food : temp) {
-                if (food.getRemaining() != 0) {
-                    textArea.append("\n\t" + food.getName() + "\t\t" + food.getRemaining()
-                            + "\t\t\t" + food.getCategory());
-                } else {
-                    textArea.append("\n\t" + food.getName()
-                            + "\t\t" + food.getRemaining() + "\t\t\t" + food.getCategory());
-                }
+                textArea.append("\n\t" + food.getName() + "\t\t\t" + food.getRemaining()
+                        + "\t\t\t" + food.getCategory());
             }
         }
-
     }
 
     /* ----------------- save and load ---------------------------*/
@@ -237,7 +237,9 @@ public class FridgeTracker extends JFrame implements ActionListener {
             jsonWriter.close();
             System.out.println("Saved " + fridge.getName() + " to " + JSON_STORE);
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + JSON_STORE);
+            String message = "Unable to write to file: " + JSON_STORE;
+            String title = "Save File";
+            JOptionPane.showConfirmDialog(null, message, title, JOptionPane.DEFAULT_OPTION);
         }
     }
 
@@ -248,50 +250,70 @@ public class FridgeTracker extends JFrame implements ActionListener {
             fridge = jsonReader.read();
             System.out.println("Loaded " + fridge.getName() + " from " + JSON_STORE);
         } catch (IOException e) {
-            System.out.println("Unable to read from file: " + JSON_STORE);
+            String message = "Unable to read from file: " + JSON_STORE;
+            String title = "Load File";
+            JOptionPane.showConfirmDialog(null, message, title, JOptionPane.DEFAULT_OPTION);
         }
     }
 
-    // EFFECTS: performs the action
+    /* ---------------------- Action Performer ----------------------- */
+
+    // EFFECTS: performs the actions triggered by buttons
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     @Override
     public void actionPerformed(ActionEvent e) {
-
-        //load
+        // MODIFIES: this
+        // EFFECTS: load fridge tracker data from file
         if (e.getSource() == load) {
             doLoad();
             String message = "Loaded " + fridge.getName() + " from " + JSON_STORE;
             String title = "Load File";
-            JOptionPane.showConfirmDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showConfirmDialog(null, message, title, JOptionPane.DEFAULT_OPTION);
             doShowFoodList();
         }
 
+        // EFFECTS: save the fridge tracker data to file
         if (e.getSource() == save) {
             doSave();
             String message = "Saved " + fridge.getName() + " to " + JSON_STORE;
             String title = "Save File";
-            JOptionPane.showConfirmDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showConfirmDialog(null, message, title, JOptionPane.DEFAULT_OPTION);
+        }
+
+        // EFFECTS: exit the application
+        if (e.getSource() == exit) {
+            System.exit(0);
+            return;
+        }
+
+        // EFFECTS: display a short guide to the user
+        if (e.getSource() == guide) {
+            NewWindow guide = new NewWindow();
         }
 
         // MODIFIES: this
         // EFFECTS: add new food item to the fridge tracker
         if (e.getSource() == addItem) {
-            String name = (String) enterName.getText();
+            String name = enterName.getText();
             Category category = (Category) enterCategory.getSelectedItem();
             int remainingDays = Integer.parseInt(enterRemainingDays.getText());
             Food food = new Food(name, category, remainingDays);
 
             fridge.putInFridge(food);
             doShowFoodList();
+
+            String message = name + " has been added to the fridge tracker.";
+            String title = "Add Item";
+            JOptionPane.showMessageDialog(null, message, title, JOptionPane.DEFAULT_OPTION);
         }
 
         // MODIFIES: this
         // EFFECTS: remove food item from the fridge tracker
         if (e.getSource() == removeItem) {
-            String itemToRemove = (String) enterNameToRemove.getText();
-            Food temp = null;
+            String itemToRemove = enterNameToRemove.getText();
             List<Food> foodToRemove = new ArrayList<>();
             for (int i = 0; i < fridge.getFoodList().size(); i++) {
-                temp = fridge.getFoodList().get(i);
+                Food temp = fridge.getFoodList().get(i);
                 if (temp.getName().equals(itemToRemove)) {
                     foodToRemove.add(temp);
                     break;
@@ -300,19 +322,35 @@ public class FridgeTracker extends JFrame implements ActionListener {
 
             fridge.remove(foodToRemove);
             doShowFoodList();
+
+            String message;
+            String title = "Remove Item";
+
+            if (foodToRemove.isEmpty()) {
+                message = "No such food exists in current fridge tracker!";
+                JOptionPane.showMessageDialog(null, message, title, JOptionPane.DEFAULT_OPTION);
+            } else {
+                message = itemToRemove + " has been removed from the fridge tracker.";
+                JOptionPane.showMessageDialog(null, message, title, JOptionPane.DEFAULT_OPTION);
+            }
+
         }
 
         // MODIFIES: this
         // EFFECTS: discard expired food in the fridge
         if (e.getSource() == discardItem) {
-            List<Food> foodToRemove = new ArrayList<>();
+            List<Food> foodToDiscard = new ArrayList<>();
             for (int i = 0; i < fridge.getFoodList().size(); i++) {
                 if (fridge.getFoodList().get(i).getRemaining() == 0) {
-                    foodToRemove.add(fridge.getFoodList().get(i));
+                    foodToDiscard.add(fridge.getFoodList().get(i));
                 }
             }
-            fridge.remove(foodToRemove);
+            fridge.remove(foodToDiscard);
             doShowFoodList();
+
+            String message = "Expired Items have been discarded.";
+            String title = "Discard Expired Item";
+            JOptionPane.showMessageDialog(null, message, title, JOptionPane.DEFAULT_OPTION);
         }
 
         // MODIFIES: this

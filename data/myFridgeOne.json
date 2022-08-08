@@ -1,6 +1,11 @@
 {
     "foods": [
         {
+            "name": "beef",
+            "category": "MEAT",
+            "remaining": 2
+        },
+        {
             "name": "lettuce",
             "category": "VEGETABLE",
             "remaining": 3

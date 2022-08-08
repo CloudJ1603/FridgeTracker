@@ -21,7 +21,6 @@ public class FridgeTrackerV0 implements ActionListener {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
-    private LaunchPage lp;
 
     // EFFECTS: initializes and runs the tacker application
     public FridgeTrackerV0() {
@@ -40,7 +39,6 @@ public class FridgeTrackerV0 implements ActionListener {
         boolean keepGoing = true;
         String command = "";
 
-        lp = new LaunchPage();
 
         while (keepGoing) {
             if (!command.equals("n")) {
