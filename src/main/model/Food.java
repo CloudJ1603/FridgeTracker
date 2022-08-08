@@ -54,8 +54,6 @@ public class Food implements Writable {
         this.category = category;
     }
 
-    ;
-
     /* ----------------- modifier ----------------------------  */
     // MODIFIES: this
     // EFFECTS: forward to next day, equivalent to decrement the remaining (days)

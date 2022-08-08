@@ -14,8 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+// fridge tracker application
 public class FridgeTracker extends JFrame implements ActionListener {
-
+    // fields and constants
     private static final String JSON_STORE = "./data/myFridgeOne.json";
     private Fridge fridge;
     private final JsonWriter jsonWriter;
