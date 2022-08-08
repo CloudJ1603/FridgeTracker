@@ -1,6 +1,11 @@
 {
     "foods": [
         {
+            "name": "chicken",
+            "category": "LEFTOVER",
+            "remaining": 1
+        },
+        {
             "name": "beef",
             "category": "MEAT",
             "remaining": 2

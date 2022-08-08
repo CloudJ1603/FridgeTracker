@@ -22,7 +22,7 @@ public class NewWindow {
 
         textArea.setFont(new Font("Consolas", Font.PLAIN, 16));
         frame.add(textArea);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setSize(420, 420);
         frame.setVisible(true);
     }

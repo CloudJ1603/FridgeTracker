@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,6 +81,7 @@ public class FridgeTracker extends JFrame implements ActionListener {
     }
 
     // EFFECTS: initialize the menu-bar
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public void initMenuBar() {
         menuBar = new JMenuBar();
         file = new JMenu("File");
@@ -89,11 +91,31 @@ public class FridgeTracker extends JFrame implements ActionListener {
         save = new JMenuItem("Save");
         guide = new JMenuItem("Guide");
 
+        file.setFont(new Font("Consolas", Font.PLAIN, 25));
+        help.setFont(new Font("Consolas", Font.PLAIN, 25));
+        exit.setFont(new Font("Consolas", Font.PLAIN, 25));
+        load.setFont(new Font("Consolas", Font.PLAIN, 25));
+        save.setFont(new Font("Consolas", Font.PLAIN, 25));
+        guide.setFont(new Font("Consolas", Font.PLAIN, 25));
+
+        ImageIcon saveIcon = new ImageIcon("src/main/ui/Icons/save.png");
+        ImageIcon loadIcon = new ImageIcon("src/main/ui/Icons/load.png");
+        ImageIcon exitIcon = new ImageIcon("src/main/ui/Icons/exit.png");
+        ImageIcon guideIcon = new ImageIcon("src/main/ui/Icons/guide.png");
+
+        save.setIcon(saveIcon);
+        load.setIcon(loadIcon);
+        exit.setIcon(exitIcon);
+        guide.setIcon(guideIcon);
+
+        load.setMnemonic(KeyEvent.VK_L); // l for load
+        save.setMnemonic(KeyEvent.VK_S); // s for save
+        exit.setMnemonic(KeyEvent.VK_E); // e for exit
+
         guide.addActionListener(this);
         exit.addActionListener(this);
         load.addActionListener(this);
         save.addActionListener(this);
-
 
         file.add(load);
         file.add(save);
@@ -288,7 +310,7 @@ public class FridgeTracker extends JFrame implements ActionListener {
 
         // EFFECTS: display a short guide to the user
         if (e.getSource() == guide) {
-            NewWindow guide = new NewWindow();
+            new NewWindow();
         }
 
         // MODIFIES: this
@@ -304,7 +326,7 @@ public class FridgeTracker extends JFrame implements ActionListener {
 
             String message = name + " has been added to the fridge tracker.";
             String title = "Add Item";
-            JOptionPane.showMessageDialog(null, message, title, JOptionPane.DEFAULT_OPTION);
+            JOptionPane.showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
         }
 
         // MODIFIES: this
@@ -328,10 +350,10 @@ public class FridgeTracker extends JFrame implements ActionListener {
 
             if (foodToRemove.isEmpty()) {
                 message = "No such food exists in current fridge tracker!";
-                JOptionPane.showMessageDialog(null, message, title, JOptionPane.DEFAULT_OPTION);
+                JOptionPane.showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
             } else {
                 message = itemToRemove + " has been removed from the fridge tracker.";
-                JOptionPane.showMessageDialog(null, message, title, JOptionPane.DEFAULT_OPTION);
+                JOptionPane.showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
             }
 
         }
@@ -350,7 +372,7 @@ public class FridgeTracker extends JFrame implements ActionListener {
 
             String message = "Expired Items have been discarded.";
             String title = "Discard Expired Item";
-            JOptionPane.showMessageDialog(null, message, title, JOptionPane.DEFAULT_OPTION);
+            JOptionPane.showMessageDialog(null, message, title, JOptionPane.PLAIN_MESSAGE);
         }
 
         // MODIFIES: this

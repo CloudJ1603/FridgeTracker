@@ -36,7 +36,7 @@ among all housekeeping things.
 
 ## User Stories
 In the context of a fridge tracker application:
-## Phase 0, 1
+### Phase 0, 1
 - As a user, I want to be able to ***add*** food items to the fridge tracker.
 - As a user, I want the fridge track can automatically ***sort*** the items I added with respect to the 
     remaining days in descending order.
@@ -45,6 +45,18 @@ In the context of a fridge tracker application:
 - As a user, I want to be able to ***discard*** the expired food from the fridge tracker.
 - As a user, I want the fridge tracker can ***simulate*** the passing of days, and change the remaining days
    of the food items accordingly. 
-## Phase 2
+### Phase 2
 - As a user, I want to be able to save my fridge tracker's data to file
 - As a user, I want to be able to load my fridge tracker's data from file
+
+## Instructions for Grader
+
+- You can generate the first required item by entering the name of the food [String], selecting 
+  the category, entering the remaining days [int], and then clicking "Add".
+- You can generate the second required item by entering the name of the food to remove [String], 
+  and then clicking "remove". You can also generate the second required item by clicking 
+  "Next Day" to decrement the remaining days, and clicking "Discard Expired Items" to remove
+  all food items with zero remaining days.
+- You can locate my visual components by clicking "File" or "Help" in the menu bar.
+- You can save the state of my application by clicking "Save" under the "File" menu.
+- You can reload the state of my application by clicking "Load" under the "File" menu.

@@ -34,6 +34,12 @@ public class FoodTest {
     }
 
     @Test
+    public void testSetCategory() {
+        f1.setCategory(Category.MEAT);
+        assertEquals(Category.MEAT, f1.getCategory());
+    }
+
+    @Test
     public void testNextDay() {
         f1.setRemaining(1);
         assertEquals(1,f1.getRemaining());
