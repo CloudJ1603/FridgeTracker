@@ -60,3 +60,53 @@ In the context of a fridge tracker application:
 - You can locate my visual components by clicking "File" or "Help" in the menu bar.
 - You can save the state of my application by clicking "Save" under the "File" menu.
 - You can reload the state of my application by clicking "Load" under the "File" menu.
+
+
+## Phase 4: Task 2 
+Loaded my Fridge One from ./data/myFridgeOne.json
+
+Tue Aug 09 17:54:33 PDT 2022
+
+[Name: chicken][Category: LEFTOVER][Remaining Days: 1] - added to the fridge tracker
+
+Tue Aug 09 17:54:33 PDT 2022
+
+[Name: beef][Category: MEAT][Remaining Days: 2] - added to the fridge tracker
+
+Tue Aug 09 17:54:33 PDT 2022
+
+[Name: lettuce][Category: VEGETABLE][Remaining Days: 3] - added to the fridge tracker
+
+Tue Aug 09 17:54:33 PDT 2022
+
+[Name: banana][Category: FRUIT][Remaining Days: 5] - added to the fridge tracker
+
+Tue Aug 09 17:54:33 PDT 2022
+
+[Name: apple][Category: FRUIT][Remaining Days: 10] - added to the fridge tracker
+
+Tue Aug 09 17:54:40 PDT 2022
+
+Forward to NextDay
+
+Tue Aug 09 17:54:42 PDT 2022
+
+Forward to NextDay
+
+Tue Aug 09 17:54:44 PDT 2022
+
+[Name: chicken][Category: LEFTOVER][Remaining Days: 0]
+
+[Name: beef][Category: MEAT][Remaining Days: 0]
+
+removed from the fridge tracker
+
+Tue Aug 09 17:54:55 PDT 2022
+
+[Name: banana][Category: FRUIT][Remaining Days: 3]- removed from the fridge tracker
+
+Process finished with exit code 0
+
+## Phase 4: Task 3
+Considering the simple and concise design of this application, there is no refactoring I 
+would like to do. 

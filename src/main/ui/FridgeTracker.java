@@ -1,6 +1,7 @@
 package ui;
 
 import model.*;
+import model.Event;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -21,6 +22,7 @@ public class FridgeTracker extends JFrame implements ActionListener {
     private Fridge fridge;
     private final JsonWriter jsonWriter;
     private final JsonReader jsonReader;
+    private EventLog eventLog = EventLog.getInstance();
 
     // frame
     private final JFrame frame;
@@ -305,6 +307,10 @@ public class FridgeTracker extends JFrame implements ActionListener {
 
         // EFFECTS: exit the application
         if (e.getSource() == exit) {
+            for (Event event : eventLog) {
+                System.out.println(event.toString());
+            }
+
             System.exit(0);
             return;
         }

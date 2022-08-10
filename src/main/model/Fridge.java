@@ -30,12 +30,27 @@ public class Fridge implements Writable {
     // EFFECTS: add new food item to the fridge tracker
     public void putInFridge(Food food) {
         this.foods.add(food);
+        EventLog.getInstance().logEvent(new Event("[Name: " + food.getName() + "]"
+                + "[Category: " + food.getCategory() + "]"
+                + "[Remaining Days: " + food.getRemaining() + "]"
+                + " - added to the fridge tracker"));
     }
 
     // MODIFIES: this
     // EFFECTS: remove the expired food item from the fridge tracker
     public void remove(List<Food> foodToRemove) {
         foods.removeAll(foodToRemove);
+        String description = "";
+        for (Food food : foodToRemove) {
+            description += "[Name: " + food.getName() + "]"
+                    + "[Category: " + food.getCategory() + "]"
+                    + "[Remaining Days: " + food.getRemaining() + "]";
+            if (foodToRemove.size() > 1) {
+                description += "\n";
+            }
+        }
+        description += " removed from the fridge tracker";
+        EventLog.getInstance().logEvent(new Event(description));
     }
 
     // MODIFIES: this
@@ -45,6 +60,7 @@ public class Fridge implements Writable {
         for (Food food : foods) {
             food.nextDay();
         }
+        EventLog.getInstance().logEvent(new Event("Forward to NextDay"));
     }
 
     /* ----------------------- getter ----------------------------- */
@@ -74,7 +90,7 @@ public class Fridge implements Writable {
     public JSONArray foodToJson() {
         JSONArray jsonArray = new JSONArray();
 
-        for (Food food: foods) {
+        for (Food food : foods) {
             jsonArray.put(food.toJson());
         }
 
