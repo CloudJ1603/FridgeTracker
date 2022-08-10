@@ -7,22 +7,19 @@ import persistence.JsonWriter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 // fridge tracker application
-public class FridgeTracker extends JFrame implements ActionListener {
+public class FridgeTracker extends JFrame implements ActionListener, WindowListener {
     // fields and constants
     private static final String JSON_STORE = "./data/myFridgeOne.json";
     private Fridge fridge;
     private final JsonWriter jsonWriter;
     private final JsonReader jsonReader;
-    private EventLog eventLog = EventLog.getInstance();
 
     // frame
     private final JFrame frame;
@@ -135,7 +132,7 @@ public class FridgeTracker extends JFrame implements ActionListener {
 
         initTextArea();
         initPanelCommand();
-
+        frame.addWindowListener(this);
         frame.add(textArea);
         frame.add(panelCommand);
     }
@@ -305,14 +302,13 @@ public class FridgeTracker extends JFrame implements ActionListener {
             JOptionPane.showConfirmDialog(null, message, title, JOptionPane.DEFAULT_OPTION);
         }
 
-        // EFFECTS: exit the application
+        // EFFECTS: print the log events in the console, and exit the application
         if (e.getSource() == exit) {
-            for (Event event : eventLog) {
+            for (Event event : EventLog.getInstance()) {
                 System.out.println(event.toString());
             }
 
             System.exit(0);
-            return;
         }
 
         // EFFECTS: display a short guide to the user
@@ -388,5 +384,44 @@ public class FridgeTracker extends JFrame implements ActionListener {
             fridge.nextDay();
             doShowFoodList();
         }
+    }
+
+    // not used
+    @Override
+    public void windowOpened(WindowEvent e) {
+    }
+
+    // EFFECTS: print the log events in the console, and exit the application
+    @Override
+    public void windowClosing(WindowEvent e) {
+        for (Event event : EventLog.getInstance()) {
+            System.out.println(event.toString());
+        }
+        System.exit(0);
+    }
+
+    // not used
+    @Override
+    public void windowClosed(WindowEvent e) {
+    }
+
+    // not used
+    @Override
+    public void windowIconified(WindowEvent e) {
+    }
+
+    // not used
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    }
+
+    // not used
+    @Override
+    public void windowActivated(WindowEvent e) {
+    }
+
+    // not used
+    @Override
+    public void windowDeactivated(WindowEvent e) {
     }
 }

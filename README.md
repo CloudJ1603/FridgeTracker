@@ -108,5 +108,5 @@ Tue Aug 09 17:54:55 PDT 2022
 Process finished with exit code 0
 
 ## Phase 4: Task 3
-Considering the simple and concise design of this application, there is no refactoring I 
-would like to do. 
+Considering the simple and concise design of this application, there is no significant 
+duplication, as a result, there is no refactoring I would like to do. 

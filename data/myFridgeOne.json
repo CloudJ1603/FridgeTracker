@@ -19,11 +19,6 @@
             "name": "banana",
             "category": "FRUIT",
             "remaining": 5
-        },
-        {
-            "name": "apple",
-            "category": "FRUIT",
-            "remaining": 10
         }
     ],
     "name": "my Fridge One"
